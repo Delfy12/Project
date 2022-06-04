@@ -8,6 +8,7 @@ using namespace std;
 
 int main()
 {
+// TRAM MOVEMENT CODE
 //    Moving_object tram(5);
 //    tram.setPosition(sf::Vector2f(240.0, 100.0));
 //    Moving_object::Moving_object(int a) : Object("textures//placeholder.png"){
@@ -47,33 +48,42 @@ int main()
 //        void Move();
 //    };
 
-    //Objects
+//Objects
     Object background("textures//background_easy.png", sf::Vector2f(0, 0));
-    Object obstacle1("textures//placeholder.png", sf::Vector2f(40.0, 800.0));
-    Object obstacle2("textures//placeholder2.png", sf::Vector2f(40.0, 800.0));
+    Object obstacle1a("textures//placeholder.png", sf::Vector2f(40.0, 800.0));
+    Object obstacle2a("textures//placeholder2.png", sf::Vector2f(40.0, 800.0));
+    Object obstacle1b("textures//placeholder.png", sf::Vector2f(240.0, 800.0));
+    Object obstacle2b("textures//placeholder2.png", sf::Vector2f(240.0, 800.0));
+    Object obstacle1c("textures//placeholder.png", sf::Vector2f(440.0, 800.0));
+    Object obstacle2c("textures//placeholder2.png", sf::Vector2f(440.0, 800.0));
 
-    //vector of pointers to our objects
-    vector<unique_ptr<Object>>obstacles;
-    auto s1 = make_unique<Object>(obstacle1);
-    auto s2 = make_unique<Object>(obstacle2);
-    obstacles.emplace_back(move(s1));
-    obstacles.emplace_back(move(s2));
+//vectors of pointers to our objects and needed out of loop variables
 
-    //Set clock and open window
-    sf::Clock clock;
+    //lane 1
+    vector<unique_ptr<Object>> lane1 = Make_vector(obstacle1a, obstacle2a);
+    bool is_chosen1 = false;
+    int element1 = 0;
     sf::Time time;
+
+    //lane 2
+    vector<unique_ptr<Object>> lane2 = Make_vector(obstacle1b, obstacle2b);
+    bool is_chosen2 = false;
+    int element2 = 0;
+    sf::Time time2;
+
+    //lane 3
+    vector<unique_ptr<Object>> lane3 = Make_vector(obstacle1c, obstacle2c);
+    bool is_chosen3 = false;
+    int element3 = 0;
+    sf::Time time3;
+
+//Set clock and open window
+    sf::Clock clock;
     sf::Time zero;
-    bool is_chosen = false;
-    int element;
-    sf::Vector2f position;
     sf::RenderWindow window(sf::VideoMode(600.0, 800.0), "Tram Stop Catcher");
 
     //While Window is Open
     while (window.isOpen()) {
-
-        //random number generator
-        int a = (rand()%10) + 1;
-        //int b = (rand()%10) + 1;//
 
             //Closing window
             sf::Event event;
@@ -85,28 +95,21 @@ int main()
             // clear the window with black color
             window.clear(sf::Color::Black);
 
-            // draw everything here
-            background.Draw(window);
+        // draw everything here
 
-            if(time.asSeconds() > 7){
-               element = Choose_element(a);
-               is_chosen = true;
-               time = zero;
-            }
-            if(is_chosen == true){
-                cout << element << endl;
-                obstacles[element]->Draw(window);
-                obstacles[element]->Move();
-                position = obstacles[element]->Get_position();
-                if(position.y <= -160.0){
-                    obstacles[element]->Set_position(sf::Vector2f(40.0, 800.0));
-                    is_chosen = false;
-                }
-            }
+            //background
+            background.Draw(window);
+            //lanes
+            Animate_lane(lane1, time, element1, is_chosen1, window, sf::Vector2f(40.0, 800.0), 7);
+            Animate_lane(lane2, time2, element2, is_chosen2, window, sf::Vector2f(240.0, 800.0), 13);
+            Animate_lane(lane3, time3, element3, is_chosen3, window, sf::Vector2f(440.0, 800.0), 9);
 
             // end the current frame
             window.display();
-            time = time + clock.restart();
+            sf::Time reset = clock.restart();
+            time = time + reset;
+            time2 = time2 + reset;
+            time3 = time3 + reset;
         }
 
         return 0;

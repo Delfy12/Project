@@ -31,6 +31,31 @@ int Choose_element(int a){
 sf::Vector2f Object::Get_position(){
     return sprite_.getPosition();
 }
-void Reset_position(){
-
+vector<unique_ptr<Object>> Make_vector(Object ob1, Object ob2){
+    vector<unique_ptr<Object>>obstacles;
+    auto s1 = make_unique<Object>(ob1);
+    auto s2 = make_unique<Object>(ob2);
+    obstacles.emplace_back(move(s1));
+    obstacles.emplace_back(move(s2));
+    return obstacles;
 }
+void Animate_lane(vector<unique_ptr<Object>> &vector, sf::Time &time, int &element, bool &is_chosen, sf::RenderWindow &window, sf::Vector2f pos, int t){
+    if(time.asSeconds() > t){
+       int random_number = (rand()%10) + 1;
+       element = Choose_element(random_number);
+       is_chosen = true;
+       sf::Time zero;
+       time = zero;
+    }
+    if(is_chosen == true){
+        vector[element]->Draw(window);
+        vector[element]->Move();
+        sf::Vector2f position = vector[element]->Get_position();
+        if(position.y <= -160.0){
+            vector[element]->Set_position(pos);
+            is_chosen = false;
+        }
+    }
+}
+
+

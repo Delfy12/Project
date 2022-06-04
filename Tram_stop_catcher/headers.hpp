@@ -18,5 +18,6 @@ public:
     sf::Vector2f Get_position();
 };
 int Choose_element(int a);
-void Spawn_object(int a, int b, vector<unique_ptr<Object>>vector);
+vector<unique_ptr<Object>> Make_vector(Object ob1, Object ob2);
+void Animate_lane(vector<unique_ptr<Object>> &vector, sf::Time &time, int &element, bool &is_chosen, sf::RenderWindow &window, sf::Vector2f pos, int t);
 
