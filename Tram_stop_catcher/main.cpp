@@ -8,45 +8,6 @@ using namespace std;
 
 int main()
 {
-// TRAM MOVEMENT CODE
-//    Moving_object tram(5);
-//    tram.setPosition(sf::Vector2f(240.0, 100.0));
-//    Moving_object::Moving_object(int a) : Object("textures//placeholder.png"){
-//    }
-//    void Moving_object::Set_direction(sf::Vector2f direction){
-//        velocity = direction * speed;
-//    }
-//    void Moving_object::Move(){
-//        sprite_.move(velocity.x, velocity.y);
-//    }
-//    tram.Set_direction(direction);
-//    tram.Move();
-//    tram.Draw(window);
-    //Input handling
-//    sf::Vector2f direction = {0.0f, 0.0f};
-//    if(event.type == event.KeyPressed){
-//        if(event.key.code == sf::Keyboard::Up){
-//            direction.y -= 1.0f;
-//        }
-//        if(event.key.code == sf::Keyboard::Down){
-//            direction.y += 1.0f;
-//        }
-//        if(event.key.code == sf::Keyboard::Right){
-//            direction.x += 1.0f;
-//        }
-//        if(event.key.code == sf::Keyboard::Left){
-//            direction.x -= 1.0f;
-//        }
-//    }
-//    class Moving_object : public Object{
-//    protected:
-//        float speed = 0.05;
-//        sf::Vector2f velocity = {0.0f, 0.05f};
-//    public:
-//        Moving_object(int);
-//        void Set_direction(sf::Vector2f);
-//        void Move();
-//    };
 
 //Objects
     Object background("textures//background_easy.png", sf::Vector2f(0, 0));
@@ -56,6 +17,7 @@ int main()
     Object obstacle2b("textures//placeholder2.png", sf::Vector2f(240.0, 800.0));
     Object obstacle1c("textures//placeholder.png", sf::Vector2f(440.0, 800.0));
     Object obstacle2c("textures//placeholder2.png", sf::Vector2f(440.0, 800.0));
+    Object tram("textures//placeholder.png", sf::Vector2f(240.0, 100.0));
 
 //vectors of pointers to our objects and needed out of loop variables
 
@@ -79,10 +41,11 @@ int main()
 
 //Set clock and open window
     sf::Clock clock;
+    sf::Time t;
     sf::Time zero;
     sf::RenderWindow window(sf::VideoMode(600.0, 800.0), "Tram Stop Catcher");
 
-    //While Window is Open
+//While Window is Open
     while (window.isOpen()) {
 
             //Closing window
@@ -91,6 +54,28 @@ int main()
                 if (event.type == sf::Event::Closed)
                     window.close();
             }
+        // input handling
+            float x = 0;
+            float y = 0;
+            bool change_lane = false;
+            int direction = 0;
+             if(event.type == event.KeyPressed){
+                    if(event.key.code == sf::Keyboard::Up){
+                        y = 0.05;
+                    }
+                    if(event.key.code == sf::Keyboard::Down){
+                        y = -0.05;
+                    }
+                    if(event.key.code == sf::Keyboard::Left){
+                        change_lane = true;
+                        direction = 1;
+                    }
+                    if(event.key.code == sf::Keyboard::Right){
+                        change_lane = true;
+                        direction = 2;
+                    }
+                }
+
 
             // clear the window with black color
             window.clear(sf::Color::Black);
@@ -99,6 +84,13 @@ int main()
 
             //background
             background.Draw(window);
+
+            //tram
+            tram.Draw(window);
+            tram.Set_speed(x, y);
+            tram.Change_lane(t, change_lane, direction);
+            tram.Move();
+
             //lanes
             Animate_lane(lane1, time, element1, is_chosen1, window, sf::Vector2f(40.0, 800.0), 7);
             Animate_lane(lane2, time2, element2, is_chosen2, window, sf::Vector2f(240.0, 800.0), 13);
@@ -110,6 +102,7 @@ int main()
             time = time + reset;
             time2 = time2 + reset;
             time3 = time3 + reset;
+            t = t + reset;
         }
 
         return 0;

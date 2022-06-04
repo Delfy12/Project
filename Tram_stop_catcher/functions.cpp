@@ -57,5 +57,40 @@ void Animate_lane(vector<unique_ptr<Object>> &vector, sf::Time &time, int &eleme
         }
     }
 }
+void Object::Set_speed(float a, float b){
+    x = a;
+    y = b;
+}
+void Object::Change_lane(sf::Time &time, bool &change, int &a){
+    if(time.asSeconds() > 1){
+    if(change == true){
+        if(a == 1){
+            sf::Vector2f pos = sprite_.getPosition();
+            if(pos.x == 240.0){
+                sprite_.setPosition(sf::Vector2f(pos.x - 200.0, pos.y));
+                sf::Time zero;
+                time = zero;
+            }
+            if(pos.x == 440.0){
+                sprite_.setPosition(sf::Vector2f(pos.x - 200.0, pos.y));
+                sf::Time zero;
+                time = zero;
+            }
+        }
+        if(a == 2){
+            sf::Vector2f pos = sprite_.getPosition();
+            if(pos.x == 240.0){
+                sprite_.setPosition(sf::Vector2f(pos.x + 200.0, pos.y));
+                sf::Time zero;
+                time = zero;
+            }
+            if(pos.x == 40.0){
+                sprite_.setPosition(sf::Vector2f(pos.x + 200.0, pos.y));
+                sf::Time zero;
+                time = zero;
+            }
+        }
 
-
+    }
+    }
+}
