@@ -11,13 +11,13 @@ int main()
 
 //Objects
     Object background("textures//background_easy.png", sf::Vector2f(0, 0));
-    Object obstacle1a("textures//placeholder.png", sf::Vector2f(40.0, 800.0));
+    Object obstacle1a("textures//przystanek.png", sf::Vector2f(40.0, 800.0));
     Object obstacle2a("textures//placeholder2.png", sf::Vector2f(40.0, 800.0));
-    Object obstacle1b("textures//placeholder.png", sf::Vector2f(240.0, 800.0));
+    Object obstacle1b("textures//przystanek.png", sf::Vector2f(240.0, 800.0));
     Object obstacle2b("textures//placeholder2.png", sf::Vector2f(240.0, 800.0));
-    Object obstacle1c("textures//placeholder.png", sf::Vector2f(440.0, 800.0));
+    Object obstacle1c("textures//przystanek.png", sf::Vector2f(440.0, 800.0));
     Object obstacle2c("textures//placeholder2.png", sf::Vector2f(440.0, 800.0));
-    Object tram("textures//placeholder.png", sf::Vector2f(240.0, 100.0));
+    Object tram("textures//tram.png", sf::Vector2f(240.0, 100.0));
 
 //vectors of pointers to our objects and needed out of loop variables
 

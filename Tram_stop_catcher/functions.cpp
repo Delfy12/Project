@@ -62,7 +62,7 @@ void Object::Set_speed(float a, float b){
     y = b;
 }
 void Object::Change_lane(sf::Time &time, bool &change, int &a){
-    if(time.asSeconds() > 1){
+    if(time.asSeconds() > 0.25){
     if(change == true){
         if(a == 1){
             sf::Vector2f pos = sprite_.getPosition();
