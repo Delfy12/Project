@@ -21,25 +21,42 @@ void Object::Set_position(sf::Vector2f position){
     sprite_.setPosition(position);
 }
 int Choose_element(int a){
-    if(a <= 5){
+    if(a <= 1){
+        return 3;
+    }
+    if(a > 1 && a <= 4){
         return 0;
     }
-    if(a > 5 && a <= 10){
+    if(a > 4 && a <= 7){
         return 1;
+    }
+    if(a > 7 && a <= 10){
+        return 2;
     }
 }
 sf::Vector2f Object::Get_position(){
     return sprite_.getPosition();
 }
-vector<unique_ptr<Object>> Make_vector(Object ob1, Object ob2){
+sf::FloatRect Object::Get_bounds(){
+    return sprite_.getGlobalBounds();
+}
+void Object::Set_sprite(string file){
+    texture_.loadFromFile(file);
+    sprite_.setTexture(texture_);
+}
+vector<unique_ptr<Object>> Make_vector(Object ob1, Object ob2, Object ob3, Object ob4){
     vector<unique_ptr<Object>>obstacles;
     auto s1 = make_unique<Object>(ob1);
     auto s2 = make_unique<Object>(ob2);
+    auto s3 = make_unique<Object>(ob3);
+    auto s4 = make_unique<Object>(ob4);
     obstacles.emplace_back(move(s1));
     obstacles.emplace_back(move(s2));
+    obstacles.emplace_back(move(s3));
+    obstacles.emplace_back(move(s4));
     return obstacles;
 }
-void Animate_lane(vector<unique_ptr<Object>> &vector, sf::Time &time, int &element, bool &is_chosen, sf::RenderWindow &window, sf::Vector2f pos, int t){
+void Animate_lane(vector<unique_ptr<Object>> &vector, sf::Time &time, int &element, bool &is_chosen, sf::RenderWindow &window, sf::Vector2f pos, int t, Object &tram, int &score, bool &empowered){
     if(time.asSeconds() > t){
        int random_number = (rand()%10) + 1;
        element = Choose_element(random_number);
@@ -50,10 +67,35 @@ void Animate_lane(vector<unique_ptr<Object>> &vector, sf::Time &time, int &eleme
     if(is_chosen == true){
         vector[element]->Draw(window);
         vector[element]->Move();
+        //if object moved out of the window
         sf::Vector2f position = vector[element]->Get_position();
         if(position.y <= -160.0){
             vector[element]->Set_position(pos);
             is_chosen = false;
+        }
+        //if object hits tram
+        sf::FloatRect tram_bounds = tram.Get_bounds();
+        sf::FloatRect object_bounds = vector[element]->Get_bounds();
+        if(object_bounds.intersects(tram_bounds)){
+            if(element == 0){
+                vector[element]->Set_position(pos);
+                is_chosen = false;
+                score = score + 1;
+            }
+            if(element == 1 || element == 2){
+                if(empowered == false){
+                    window.close();
+                }
+                if(empowered == true){
+                    vector[element]->Set_position(pos);
+                    is_chosen = false;
+                }
+            }
+            if(element == 3){
+                vector[element]->Set_position(pos);
+                is_chosen = false;
+                empowered = true;
+            }
         }
     }
 }
@@ -94,3 +136,4 @@ void Object::Change_lane(sf::Time &time, bool &change, int &a){
     }
     }
 }
+

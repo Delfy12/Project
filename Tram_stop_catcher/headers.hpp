@@ -18,7 +18,9 @@ public:
     sf::Vector2f Get_position();
     void Set_speed(float a, float b);
     void Change_lane(sf::Time &time, bool &change, int &a);
+    sf::FloatRect Get_bounds();
+    void Set_sprite(string file);
 };
 int Choose_element(int a);
-vector<unique_ptr<Object>> Make_vector(Object ob1, Object ob2);
-void Animate_lane(vector<unique_ptr<Object>> &vector, sf::Time &time, int &element, bool &is_chosen, sf::RenderWindow &window, sf::Vector2f pos, int t);
+vector<unique_ptr<Object>> Make_vector(Object ob1, Object ob2, Object ob3, Object ob4);
+void Animate_lane(vector<unique_ptr<Object>> &vector, sf::Time &time, int &element, bool &is_chosen, sf::RenderWindow &window, sf::Vector2f pos, int t, Object &tram, int &score, bool &empowered);
